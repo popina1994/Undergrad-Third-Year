@@ -1,0 +1,24 @@
+Monitor Allocator 
+{
+	CondVar TwoRequest, OneRequest
+	int available = 3
+	Alloc(int t, int amount)
+	{
+		if (available - amount < 0)
+			if (amount == 2)
+				TwoRequest.Wait(t)
+			else 
+				OneRequest.Wait(t)				
+		available -= amount
+	}
+
+	Release(int amount)	
+	{
+		available += amount 
+		if (available >= 2) AND (NOT TwoRequest.Empty)
+			TwoRequest.Signal
+		else if (available >= 1 ) AND (NOT OneRequest.Empty)
+			OneRequest.Signal
+
+	}
+}

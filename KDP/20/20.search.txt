@@ -1,0 +1,10 @@
+process Search(elem ) 
+	{
+	AWAIT (nDelete == 0) 
+	nSearch ++
+	}
+
+	FindEl
+	{
+	nSearch --
+	}

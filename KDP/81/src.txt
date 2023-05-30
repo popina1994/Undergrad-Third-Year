@@ -1,0 +1,72 @@
+void Client() {
+	int cnt = 0;
+	while (true) {
+		in("getNextCnt", ?cnt);
+		out("getNextCnt", cnt + 1);
+		out("getRequest", request, cnt);
+		in("sendReply", ?reply, cnt);
+	}
+}
+
+
+void Server(int glIDX) {
+	int servingCnt, NServed = 0;
+
+	in("numServer", ?servingCnt);
+	out("numServer", servingCnt+ 1);
+
+	while (true) {
+		if (rdp("summing")) {
+			// Ako krece racunanje, posalji serveru koliko treba da izracuna.
+			//
+			out("served", servingCnt, NServed);
+			// Sacekaj dok ne zavrsi.
+			//
+			in("finishSumming", servingCnt);
+			NServed = 0;
+		}
+
+		in("nextRequest", ?indexR);
+		out("nextRequest", indexR + 1);
+
+		in("getRequest", ?request, indexR);
+		out("sendReply", repy, indexR);
+	}
+}
+
+
+void SummingProcess() {
+	int served, nServed;
+	sleep();
+	out("summing");
+	rd("numServer", servingCnt);
+	served = 0;
+	
+	for (int idx = 0; idx < servingCnt; idx ++) {
+		in("served", idx, ?nServed);
+		served += nServed;
+	}
+	in("summing");
+	for (int idx = 0; idx < servingCnt; idx ++) {
+		out("finishSumming", idx);
+	}
+
+
+}
+
+
+int main() {
+
+	constexpr int SERVERS = 10;
+	constexpr int CLIENTS = 100;
+
+	out("getNextCnt", 0);
+	out("numServer", 0);
+	for (int idx = 0; idx < SERVERS; idx ++)
+		eval (Server(0));
+
+	for (int idx = 0; idx < CLIENTS; idx ++)
+		eval(Client())
+
+	return 0;
+}

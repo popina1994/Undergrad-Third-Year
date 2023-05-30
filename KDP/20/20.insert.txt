@@ -1,0 +1,11 @@
+process Insert(elem ) 
+	{
+		AWAIT (nDelete == 0) AND (nInsert == 0) 
+		nInsert ++
+	}
+	Insert
+
+	{
+		nInsert --
+	}
+

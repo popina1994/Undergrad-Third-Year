@@ -1,0 +1,46 @@
+Monitor ReaderWriter 
+{
+	
+	int ID = 0, nextID = 0
+	CondVar Go
+
+	RequestRead() 
+	{
+		PID = ID
+		ID ++
+
+		while (nextID != PID) 
+			//Go.SignalAll 
+			Go.Wait
+		nr ++
+		nextID ++
+		Go.SignalAll
+	}
+
+	ReleaseRead() 
+	{
+		nr --
+		
+		if (nr == 0)
+			Go.SignalAll
+	}
+
+	RequestWrite() 
+	{
+		PID = ID 
+		ID ++
+		while (nextID != PID)  OR (nr != 0) 
+			// It is not needed because when signallAll is done all processes are going to wake up. So the one which is needed is going to wake up 
+			// Go.SignalAll
+			//
+			Go.Wait
+
+	}
+'/'
+	ReleaseWrite() 
+	{
+		nextID ++
+		Go.SignalAll
+	}
+
+}

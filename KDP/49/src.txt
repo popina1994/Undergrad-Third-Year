@@ -1,0 +1,27 @@
+[Philoshophers(1 .. 5) :: PHILOSOPH, Table :: TABLE]
+
+
+PHILOSOPH [
+	Table ! getFork();
+	Table ? waitFork();
+	EAT
+
+	THINK
+]
+
+
+TABLE [
+	int forks[5] = 0;
+	
+	1) (i : 1..5) forks[ (i - 1 + 5) % 5 )] == 0; forks[ i] == 0; Philosophers(i)? 		getFork() ->
+		[
+		forks[ (i - 1 + 5) % 5 )] = 1; forks[ i] == 1;
+		Philosophers(i) ! waitFork();
+		]
+	2) (i : 1..5) forks[ (i - 1 + 5) % 5 )] == 1; forks[ i] == 1; Philosophers(i)? 		putFork() ->
+		[
+		forks[ (i - 1 + 5) % 5 )] = 0; forks[ i] == 0;
+		Philosophers(i) ! waitFork();
+		]
+
+]

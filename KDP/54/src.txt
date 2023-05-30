@@ -1,0 +1,27 @@
+[ Reader(i : 0..4) :: READER || Writer(i : 0..4) :: WRITER || Monitor :: MONITOR ]
+
+READER :: 
+*[
+	true -> [ 
+			Monitor!startRead(); 
+			READING; 
+			Monitor!finishedRead();
+			]
+]
+
+WRITER ::
+*[
+	true -> [
+			Monitor!startWrite();
+			WRITING;
+			Monitor!finishedWrite();
+		]
+]
+
+MONITOR ::
+*[
+	1)  numW = 0; (i : 0 .. 4)Reader(i) ? startRead() -> numR ++
+	2)  numW = 0; numR = 0; (i : 0 .. 4)Writer(i) ? startWrite() -> numW ++ 
+	3) (i : 0.. 4) Writer(i) ? finishedWrite() -> numW --
+	4) (i : 0 .. 4) Reader(i) ? finshedRead(); -> numR --
+]

@@ -1,0 +1,70 @@
+Monitor Buffer
+{
+	const int N = ...
+	int back
+	CondVar fullyConsumed[N]
+	CondVar nowProduced[n];
+	CondVar produce
+	int consumed[N]  = {N,...};
+	T x[N]
+
+	Produce(t) 
+	{
+		back = (back + 1) % N
+		// This will work only in case when there is one element buffer.
+		// Figure out, how to solve this problem.
+		// Problem solved, because consumed values are initialized to the N.
+		//
+ 		if (consumed[back] != N)
+			//fullyConsumed[back].Wait()
+ 			produce.Wait()
+			
+		
+		x[back] = t
+
+		// Reset the counter of consumed products for current spot
+		//
+		consumed[back] = 0
+		
+		// All which are consuming, and waiting for this product, are woken up
+		//
+		nowProduced[back].SignalAll()
+	}
+
+	Consume(idx) 
+	{
+
+		if (consumed[idx] == N)
+			nowProduced[idx].Wait()	
+		t = x[idx]
+		
+		consumed[idx] ++
+
+		// if (consumed[idx] == N)
+		// 	fullyConsumed[idx].Signal()
+		if (consumed[idx] == N) AND (idx == back)
+			produce.Signal()
+	}
+
+}
+
+Buffer buffer
+
+Process Producer 
+{
+	
+
+	Run() 
+	{
+		t = CreateT()
+		buffer.Produce(t)
+	}
+}
+
+Process Consumer 
+{
+	Run()
+	{
+		t = buffer.Consume(idx)
+	}
+}

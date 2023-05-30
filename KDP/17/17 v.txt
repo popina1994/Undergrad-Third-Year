@@ -1,0 +1,30 @@
+P = 'MUTUAL'
+onBridgeR = 0, onBridgeL = 0, waitRight = 0 waitLeft = 0, passedL = 0, passedR = 0
+
+region Bridge 
+{
+	waitLeft ++
+	BACKL : 
+		AWAIT( ( (onBridgeR == 0) AND ( (P = 'MUTUAL') ) OR (P = 'LEFT') ) )	
+
+		if (passedL >= N) 
+			// if (waitRight > 0)  This line is not needed because when there is going to be just one passedL 
+			// then waitRight is already positive.
+			// 
+			P = 'RIGHT'
+			passedL = 0
+			goto BACKL
+
+
+		if (waitRight > 0) 
+			passedL++
+		waitLeft --
+		onBridgeL ++
+}
+	PASS
+region Bridge 
+{
+	onBridgeL --
+	if (onBridgeL == 0) AND (waitRight == 0)
+		P = 'MUTUAL'
+}	

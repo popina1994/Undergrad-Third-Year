@@ -1,0 +1,60 @@
+Monitor ReadWrite {
+	int nr, nw
+	CondVar ReadGo, WriteGo 
+
+	RequestRead () 
+	{
+
+		while (nw != 0) OR (aheadR >= N) ReadGo.Wait()
+		nr ++	
+		if (waitingW > 0)
+			aheadR ++
+		ReadGo.Signal
+	}
+
+	ReleaseRead() 
+	{
+		nr --
+		if (nr == 0) 
+			WriteGo.Signal
+	}
+
+	RequestWrite()
+	{
+		waitingW ++
+		while  (nw != 0) OR (nr != 0) WriteGo.Wait()
+		nw ++
+		waitingW--
+	}
+
+	ReleaseWrite() 
+	{
+		nw --
+		aheadR = 0
+		if (!ReadGo.Empty)
+			ReadGo.Signal(N)
+		else 
+			WriteGo.Signal
+	}
+}
+
+{
+	await <nw == 0> 
+	nr ++
+}
+
+
+Read 
+
+{
+	nr --
+}
+
+{
+	await <nr == 0 and nw == 0>
+	nw ++
+}
+	Write 
+{
+	nw --
+}

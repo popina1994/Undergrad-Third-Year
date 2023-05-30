@@ -1,0 +1,43 @@
+Monitor Philosophers 
+{
+	const int N = ...
+
+	CondVar canEat[N];
+	bool fork[N] = {0};
+
+	PickUp(int idx) 
+	{
+		if (fork[idx] != 0) OR (fork[(idx + 1) % N] != 0)
+			canEat[idx].Wait()
+		
+		fork[idx] = 1
+		fork[(idx+1] % N] = 1
+	}
+
+	Put(int idx) 
+	{
+		if (fork[(idx - 1) % N] == 1) 
+			canEat[ (idx - 1)%N].Signal()
+		else if (fork[(idx + 2) % N] == 1)
+			canEat[ (idx + 1) % N ].Signal()
+
+	
+
+	}
+}
+
+Philosopher p;
+
+Process Phisopher 
+{
+	int idx
+	Run() 
+	{
+		p.PickUp(idx)
+		Eat()
+		p.Put(idx)
+		Sleep()
+	}	
+}
+
+Philosophers p

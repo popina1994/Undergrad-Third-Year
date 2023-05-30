@@ -1,0 +1,31 @@
+Monitor FIFO 
+{
+	const N 
+	T X[N]
+	int front = 0, back = 0, size = 0
+	CondVar NotFull, NotEmpty
+
+	Put(T elem)
+	{
+		while (size == N) 
+			NotFull.Wait
+
+		x[back] = elem
+		back = (back + 1) % N
+		size ++
+		NotEmpty.Signal
+	}
+	
+	T Take() 
+	{
+		while (size == 0)
+			NotEmpty.Wait
+
+		elem = x[front]
+		front = (front + 1) % N
+		size --
+		NotFull.Signal
+		return T 
+	}	
+
+}

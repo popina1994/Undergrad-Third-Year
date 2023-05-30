@@ -1,0 +1,21 @@
+Monitor 
+{
+	WakeUp(int n) 
+	{
+		time = now + n
+		if (time < n) WakeMe.Wait(time)
+		
+		if (!WakeMe.Empty AND WakeMe.MinRank <= now)
+				WakeMe.Signal
+	}
+
+	Tick() 
+	{
+		now ++
+		while (time) 
+		{
+			if (!WakeMe.Empty AND WakeMe.MinRank <= now)
+				WakeMe.Signal
+		}
+	}	
+}

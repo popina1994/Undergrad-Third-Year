@@ -1,0 +1,34 @@
+Monitor Fakultet 
+{
+	PriorityQ q
+	globalIdx = 0
+	int Upis()
+	{
+		if (!q.Empty())
+			idx = q.Pop()
+		else 
+			idx = globalIdx++
+		return idx 
+	}
+
+	Ispis(idx) 
+	{
+		q.Push(idx)
+	}
+}
+
+Fakultet f
+
+Process Sluzbenik 
+{
+	Run() 
+	{
+		input(Izbor)
+		switch (Izbor)
+			case 'Upis' : idx = f.Upis()
+				print ('Broj je'.idx)
+			case 'Ispis' : 
+				input(idx)
+				f.Ispis(idx)
+	}	
+}

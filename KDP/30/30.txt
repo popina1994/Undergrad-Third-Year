@@ -1,0 +1,56 @@
+	Monitor Pranje 
+{
+	const int cap = ...
+	int beli = 0, sareni = 0, osetljiv = 0;
+	CondVar belo, sareno, osetljivo
+
+	PokusajStavljanja(int b, int s, int o) 
+		while (b != 0)
+			Check...
+			belo.Wait()
+		
+		while (sareni + s >= cap)
+			sareno.Wait()
+
+		while (osetljiv + o >= cap)
+			osetlljivo.Wait()
+	}
+
+	PokusajPranja
+	{
+		found = FindMax3(...)
+		if (found) 
+		{	
+			// Wakes up all threads which are waiting to put something in the basket.
+			//
+			type[].SignalAll()
+		}
+	}
+
+
+}
+
+Pranje pranje
+
+Process Ukucani 
+{
+
+	Run() 
+	{
+		PokusajStavljanja()
+		PraviVes()
+	}
+}
+
+Process Masina 
+{
+	Run() 
+	{
+		// Assumation, the Machine will be available when the cheap current appears.
+		//
+		Cheap.Wait();
+		work = PokusajPranja()
+		if (work)
+			Work();
+	}	
+}

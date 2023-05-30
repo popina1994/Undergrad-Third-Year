@@ -1,0 +1,56 @@
+Monitor Berba
+{
+	const prikolica_kapacitet = ...
+	int teret = 0 
+	CondVar come
+
+	OstavljamGajbice(int mojTeret) 
+	{
+		teret += mojTeret
+		if (teret >= prikolica_kapacitet)
+			come.Signal()
+	}
+
+	SpremanDaPokupim() 
+	{
+		come.Wait()
+		tert -= prikolica_kapacitet
+	}
+}
+
+Berba berba
+
+Process Ferdza
+{
+	VoziMisko() 
+	{
+		...
+	}
+
+	Run() 
+	{
+		while (true) 
+		{
+			berba.SpremanDaPokupim()
+			VoziMisko()
+		}
+
+	}
+}
+
+Process Toma 
+{
+	Sakupljaj() 
+	{
+		...
+	}	
+
+	Run() 
+	{
+		while (true) 
+		{
+			Sakupljaj() 
+			Berba.OstavljamGajbice()
+		}
+	}
+}

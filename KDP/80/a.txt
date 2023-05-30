@@ -1,0 +1,33 @@
+void client () {
+	in("indexCur", ?index);
+	out("indexCur", index + 1);
+	out("request", index, request);
+	in("reply", index, reply);
+}
+
+
+
+
+
+
+void Server(int indexGl) {
+	index = indexGl;
+
+	while (true) {
+		in("request", index, ?request);
+		...
+		out("reply", index, reply);
+		index ++;
+	}
+}
+
+
+
+int main() {
+	constexpr int N = 10;
+	eval(Server(0));
+	for (int idx = 0; idx < N; idx ++)
+		eval(Client());
+
+	return 0;
+}

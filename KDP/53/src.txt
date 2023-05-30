@@ -1,0 +1,29 @@
+[Hydrogen(h : 1..nh) :: HYDROGEN || Oxygen (h : 1..no) :: OXYGEN || Barier :: BARIER]
+
+HYDROGEN :: [
+	idxOxy, idxHyd1, idxHyd2 : integer;
+	Barier  ! Exit() ->
+		Barier ? OtherWait(idxOxy, idxHyd1, idxHyd2) ->
+			Bond(idxOxy, idxHyd1, idxHyd2);
+
+]
+
+OXYGEN :: [
+	idxOxy, idxHyd1, idxHyd2 : integer;
+	Barier !Exit() ->
+		Barier ? OtherWait(idxOxy, idxHyd1, idxHyd2) ->
+			Bond(idxOxy, idxHyd1, idxHyd2);
+]
+
+
+BARIER :: [
+	hyd1, hyd2, oxy : intger;
+	(hyd1 : 1 .. n) Hydrogen(hyd1) ? Exit() ->
+		(hyd2 : 1 .. n) Hydrogen(hyd2) ? Exit() ->
+			(oxy : 1 .. n) Oxygen(oxy) ? Exit() ->
+				Hydrogen(hyd1) ! OtherWait(idxOxy, idxHyd1, idxHyd2) ->
+					Hydrogen(hyd2) ! OtherWait(idxOxy, idxHyd1, idxHyd2)  ->
+						Oxygen(oxy) ! OtherWait(idxOxy, idxHyd1, idxHyd2);
+
+
+]

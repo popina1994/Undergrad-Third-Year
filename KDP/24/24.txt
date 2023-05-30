@@ -1,0 +1,17 @@
+Monitor Avion {
+	condVar prior;
+
+	IWantToEnter(myPrior) 
+	{	
+		// Adds me in priority queue which are waiting on current condition.
+		//
+		prior.wait(myPrior)
+		prior.signal()
+	}
+
+	EnterMyBelovedServents() 
+	{
+		prior.signal()
+	}
+
+}

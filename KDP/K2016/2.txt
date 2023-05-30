@@ -1,0 +1,39 @@
+
+
+
+
+GetHaircut() 
+{
+	decision = 'COME IN'
+	region P
+	while (true) { 
+		idx ++
+		if (barberFree == 0)
+			if (sitting == 10)
+				if (standing == 10) 
+					decision = 'GO OUT' 
+					break;
+				else 
+					standing++
+					<await ... OR ... OR ... >
+			else 
+				sitting ++
+				<await ... OR 
+		else 
+			barberFree --
+
+	}
+}
+
+HairCut() 
+{
+	region P
+		<await sittng != 0 OR standing != 0>
+	...
+	
+	region P
+	{
+		<await ... >
+	}
+
+}

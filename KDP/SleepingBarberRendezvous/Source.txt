@@ -1,0 +1,55 @@
+Monitor BarberShop
+{
+	bool busy = false
+	int waiting = 0, globalId = -1
+	CondVar enter, cut, jobDone, wentOut
+	GetHaircut(id) 
+	{	
+
+		customerReady.Signal()
+		barberReady.Wait()
+		cut.Signal()
+		doorOpen.Wait()
+		customerWent.Signal()
+	}
+
+	GetNextCustomer() 
+	{
+
+		customerReady.Wait()
+		barberReady.Signal()
+		cut.Wait()
+		doorOpen.Signal()
+		customerWent.Wait()			
+	}
+
+	FinishedCut(id) 
+	{	
+		jobDone.Signal()
+		wentOut.Wait()
+
+	}
+	
+}
+
+Process Barber 
+{
+	Run() 
+	{
+		while (true) 
+			id = GetNextCustomer()
+			Cut(id)
+			FinishedCut(id)
+
+	}	
+}
+
+Process Customer 
+{
+	Run() 
+	{
+		while (true)
+			GetHairCut(id)
+			Fuck()
+	}	
+}

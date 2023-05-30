@@ -1,0 +1,24 @@
+Monitor 
+{
+	
+	WakeUp(int n) 
+	{	
+		// It's only initialized on the beginning of the monitor, and later it will behave as static variable. 
+		//
+		time = n + now
+		while (time > now) TimerBrr.wait(time)
+		// We need to wake all processes which are waiting on this particular timer
+		// This doesn't works the best on signal and continue. Priority of Tick process is big. 
+		// TimerBrr.signal
+		//
+		
+	}	
+
+
+	Tick() 
+	{
+		time ++
+		// TimerBrr.signal()
+		TimerBrr.signalAll()
+	}
+}

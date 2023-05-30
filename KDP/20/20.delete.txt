@@ -1,0 +1,13 @@
+nDelete = 0, nInsert = 0, nSearch = 0
+// We'll see later if this nSearch is needed.
+//
+process Delete(elem)
+	{
+		AWAIT(nInsert == 0) AND (nDelete == 0) AND (nSearch == 0)
+		nDelete ++
+	}
+	Delete
+	{
+		nDelete --
+	}
+process
